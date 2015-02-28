@@ -10,10 +10,18 @@ import org.atmosphere.cpr.BroadcasterFactory;
 import org.atmosphere.guice.AtmosphereGuiceServlet;
 import uk.co.uwcs.pineappleguice.QueueService.MediaQueue;
 
+import java.util.logging.Logger;
+
 /**
- * Created by rayhaan on 16/01/15.
+ * Module configuration
  */
 public class MediaModule extends AbstractModule {
+
+    private Logger logger;
+
+    public MediaModule(Logger logger) {
+        this.logger = logger;
+    }
 
     @Override
     protected void configure() {
@@ -21,17 +29,8 @@ public class MediaModule extends AbstractModule {
         // Maintained here for legacy reasons (consult MrWilson).
         // Set as 9:07. This is the length of Jeff Wayne's "War of the Worlds", Track 1. These two things are unrelated.
         bindConstant().annotatedWith(Names.named("Timeout")).to(541);  // Timeout for player.
-        bindConstant().annotatedWith(Names.named("downloaderPath")).to("/tmp/youtube-dl");  // Path to download script.
+        bindConstant().annotatedWith(Names.named("downloaderPath")).to("/usr/local/bin/youtube-dl");  // Path to download script.
     }
 
-    @Provides
-    BroadcasterFactory provideBroadcasterFactory(AtmosphereGuiceServlet atmosphereGuiceServlet) {
-        return atmosphereGuiceServlet.framework().getBroadcasterFactory();
-    }
-
-    @Provides
-    AtmosphereResourceFactory provideAtmosphereResourceFactory(AtmosphereGuiceServlet atmosphereGuiceServlet) {
-        return atmosphereGuiceServlet.framework().atmosphereFactory();
-    }
 
 }

@@ -24,6 +24,8 @@ dependencies {
     compile group: 'org.atmosphere', name: 'atmosphere-annotations', version: '2.2.4'
     compile group: 'org.atmosphere', name: 'atmosphere-guice', version: '2.2.1'
     compile group: 'org.eclipse.jetty.websocket', name: 'websocket-server', version: '9.0.7.v20131107'
+    compile 'com.yammer.dropwizard:dropwizard-auth:0.6.2'
+;
     capsule 'co.paralleluniverse:capsule:0.4.0'
 }
 

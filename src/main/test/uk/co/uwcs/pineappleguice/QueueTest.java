@@ -4,16 +4,8 @@ import org.junit.ClassRule;
 import org.junit.Test;
 
 /**
- * Created by rayhaan on 19/01/15.
+ * Test the queue.
  */
 public class QueueTest {
-
-    @ClassRule
-
-
-    @Test
-    public void testEmptyQueue() {
-
-    }
-
+    // TODO(rayhaan): Actually write some tests
 }

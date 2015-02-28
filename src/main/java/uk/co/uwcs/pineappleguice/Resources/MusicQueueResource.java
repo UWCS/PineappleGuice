@@ -6,12 +6,15 @@ import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.sun.jersey.core.header.FormDataContentDisposition;
+import com.yammer.dropwizard.auth.Auth;
+import uk.co.uwcs.pineappleguice.Authentication.PineapplePrincipal;
 import uk.co.uwcs.pineappleguice.MediaModule;
 import uk.co.uwcs.pineappleguice.PlayerService.MediaPlayer;
 import uk.co.uwcs.pineappleguice.QueueService.MediaBucket;
 import uk.co.uwcs.pineappleguice.QueueService.MediaItem;
 import uk.co.uwcs.pineappleguice.QueueService.MediaQueue;
 
+import javax.naming.AuthenticationException;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
@@ -56,7 +59,10 @@ public class MusicQueueResource {
 
     @GET
     @Path("/kill")
-    public void kill() {
+    public void kill(@Auth PineapplePrincipal principal) throws AuthenticationException {
+        if (principal == null) {
+            throw new AuthenticationException();
+        }
         player.kill();
     }
 
@@ -84,7 +90,7 @@ public class MusicQueueResource {
     @Path("/youtube")
     public MediaItem downloadYoutube(@QueryParam("url") String url,
                                   @Context HttpServletRequest request) throws Exception {
-        Injector injector = Guice.createInjector(new MediaModule());
+        Injector injector = Guice.createInjector(new MediaModule(null));
         DownloadService ds = injector.getInstance(DownloadService.class);
         ds.setURL(url);
         ExecutorService service = Executors.newSingleThreadExecutor();
@@ -121,5 +127,21 @@ public class MusicQueueResource {
         MediaBucket bucket = queue.getBucketByUuid(UUID.fromString(bucketUUID));
         Preconditions.checkNotNull(bucket);
         return bucket.deleteItem(mediaItem);
+    }
+
+    @GET
+    @Path("/nowPlaying")
+    public MediaItem nowPlaying() {
+        if (player.nowPlaying().isPresent()) {
+            return player.nowPlaying().get();
+        }
+        return new MediaItem.Builder().name("Silence").build();
+    }
+
+    @GET
+    @Path("/kick")
+    public void kick() {
+        Thread t = new Thread(player);
+        t.start();
     }
 }

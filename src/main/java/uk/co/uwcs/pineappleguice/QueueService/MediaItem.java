@@ -1,10 +1,9 @@
 package uk.co.uwcs.pineappleguice.QueueService;
 
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Created by rayhaan on 16/01/15.
+ * Represents a file to be played on the music server.
  */
 public class MediaItem {
 

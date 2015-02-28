@@ -7,10 +7,13 @@ function removeAlertEmptyQueue() {
 }
 
 function queueYoutube(url) {
+    $(".youtube").append('<div id="youtube-pending"><p>Trying to download...</p></div>');
     $.ajax({
         url: "/api/queue/youtube?url=" + url
     }).done(function(response) {
+        $("#youtube-pending").remove();
         $("#submitYoutube").show();
+        $("#youtubeURL").empty();
         console.log("Successfully queued.");
     });
 
@@ -21,6 +24,7 @@ $(document).ready(function() {
     'use strict';
 
     var mediaList;
+    var lastPlaying = null;
 
     $("#submitYoutube").click(function() {
         var url = $("#youtubeURL").val();
@@ -62,6 +66,23 @@ $(document).ready(function() {
                     $("#Queue").append(container);
                 }
             }
-        })
+        });
+
+        // Update now playing
+        $.ajax({
+            url: "/api/queue/nowPlaying",
+            dataType: "json"
+        }).done(function(data, status) {
+            if (status == "nocontent") {
+                $("#nowPlaying").hide();
+                return;
+            }
+            $("#nowPlaying").show();
+            if (data != lastPlaying) {
+                lastPlaying = data;
+                $("#nowPlaying").empty()
+                $("#nowPlaying").append("<p><b>Now playing:</b> " + data.name + "</p>");
+            }
+        });
     }, 1000);
 });

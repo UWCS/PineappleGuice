@@ -1,14 +1,12 @@
 package uk.co.uwcs.pineappleguice.QueueService;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 
 import java.util.*;
 import java.util.logging.Logger;
 
 /**
- * Created by rayhaan on 16/01/15.
+ * The queue of items itself.
  */
 public class MediaQueue {
 
