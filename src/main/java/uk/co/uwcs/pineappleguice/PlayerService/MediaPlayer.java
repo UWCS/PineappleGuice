@@ -75,7 +75,7 @@ public class MediaPlayer implements Runnable {
         // Reinitialise the executor
         executorService = Executors.newSingleThreadExecutor();
         ProcessBuilder pb = new ProcessBuilder("/usr/bin/mplayer",
-                "-fs", "-vo", "sdl" , "af", "volnorm", "-ass", mediaPath);
+                "-fs", "-vo", "sdl" , "-af", "volnorm", "-ass", mediaPath);
 
         try {
             Future<Process> fp = executorService.submit(() -> {
