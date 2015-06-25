@@ -28,7 +28,7 @@ public class MediaModule extends AbstractModule {
         bind(MediaQueue.class).in(Singleton.class);  // Have one media queue for this app.
         // Maintained here for legacy reasons (consult MrWilson).
         // Set as 9:07. This is the length of Jeff Wayne's "War of the Worlds", Track 1. These two things are unrelated.
-        bindConstant().annotatedWith(Names.named("Timeout")).to(541);  // Timeout for player.
+        bindConstant().annotatedWith(Names.named("Timeout")).to(547);  // Timeout for player. Should be 547 seconds to match length of https://www.youtube.com/watch?v=SI9GwfQWQSU
         bindConstant().annotatedWith(Names.named("downloaderPath")).to("/usr/local/bin/youtube-dl");  // Path to download script.
     }
 
